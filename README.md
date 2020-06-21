@@ -1,5 +1,5 @@
-# Dockerize Laravel
-Docker compose to setup nginx, php and mysql for laravel 4.0.3.  
+# Dockerize Codeigniter
+Docker compose to setup nginx, php and mysql for codeigniter 4.0.3.  
 
 ## Directory Structure
 ```sh
