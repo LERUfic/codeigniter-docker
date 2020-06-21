@@ -125,3 +125,7 @@ nb-configuration.xml
 /results/
 /phpunit*.xml
 /.phpunit.*.cache
+
+# docker mysql
+/docker/mysql/*
+!/docker/mysql/based.sql

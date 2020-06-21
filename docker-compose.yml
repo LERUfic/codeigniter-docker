@@ -1,0 +1,51 @@
+version: '3.7'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: leru_mysql
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql/
+      - ./docker/mysql/based.sql:/docker-entrypoint-initdb.d/based.sql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: mysite
+      MYSQL_ROOT_PASSWORD: l3ru123!
+    networks:
+      - tempest
+
+  php_fpm:
+    build:
+      context: ./
+      dockerfile: ./docker/php/Dockerfile
+    working_dir: /var/www/
+    container_name: leru_php_fpm
+    volumes:
+      - leru-volume:/var/www
+    depends_on:
+      - mysql
+    networks:
+      - tempest
+
+  nginx_url:
+    image: nginx:latest
+    container_name: leru_nginx
+    networks:
+      - tempest
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - leru-volume:/var/www/
+    depends_on:
+      - php_fpm
+      - mysql
+    ports:
+      - "80:80"
+
+networks:
+  tempest:
+    driver: bridge
+volumes:
+  leru-volume:
